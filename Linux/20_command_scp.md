@@ -49,3 +49,7 @@ scp是secure copy的缩写，是linux下基于ssh登陆进行安全的远程文�
 
     #-r为递归复制，单个文件不需要
     scp -r /usr/local/upload.txt root@192.168.0.20:/usr/local/
+
+## 参考
+
+- [Linux scp命令](https://zhuanlan.zhihu.com/p/201086165)
