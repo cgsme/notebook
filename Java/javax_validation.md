@@ -1,6 +1,10 @@
-# javax.validation 注解
+# javax.validation 校验注解
+
+用于Bean验证的API。
 
 ## @Constraint
+
+> 用于标记一个自定义注解为一个验证Bean的约束注解。一个自定义的约束注解自身必须有@Constraint注解注释，
 
 ## @GroupSequence
 
@@ -11,6 +15,8 @@
 ## @Valid
 
 ## 1. constraints 包
+
+包含所有提供Bean验证的约束（也成为内置约束）
 
 ### 1.1 @AssertFalse
 
@@ -54,7 +60,11 @@
 
 ### 1.9 @Max
 
+> 被注解的元素必须是一个数字，且其值必须小于等于给定的最大值
+
 ### 1.10 @Min
+
+> 被注解的元素必须是一个数字，且其值必须大于等于给定的最小值
 
 ### 1.11 @Negative
 
