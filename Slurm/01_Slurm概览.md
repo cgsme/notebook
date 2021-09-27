@@ -1,5 +1,7 @@
 # Slurm
 
+Simple Linux® Utility for Resource Management (SLURM)
+
 ## 基本介绍
 
 Slurm是一个开源、容错、高度可扩展的集群管理和作业调度系统，适用于大小linux集群。作为集群关键负载管理器，Slurm具有三个关键功能：
