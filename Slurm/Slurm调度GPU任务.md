@@ -153,7 +153,7 @@ Thu Sep 30 10:51:15 2021
 
 在Slurm工作目录中创建2个临时脚本：
 
-- midScript.sh（通过脚本执行官方示例，官方示例c语言编译后的二进制文件，Slurm貌似不能直接执行,旧通过这个临时shell脚本来调用）  
+- midScript.sh（通过脚本执行官方示例，官方示例c语言编译后的二进制文件，Slurm貌似不能直接执行,就通过这个临时shell脚本来调用）  
 - test_cuda_job.sh （Slurm命令写在这，后面直接运行这个脚本来提交JOB）
 
 ```shell
