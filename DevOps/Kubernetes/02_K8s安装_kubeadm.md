@@ -22,13 +22,18 @@
 
 #### 1.2 关闭selinux
 
-    sed -i 's/enforcing/disabled/' /etc/selinux/config  #永久关闭
+    #永久关闭
+    sed -i 's/enforcing/disabled/' /etc/selinux/config  
+
+    # 或者 将 SELinux 设置为 permissive 模式（相当于将其禁用）
+    sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+
     setenforce 0  # 临时关闭
 
 #### 1.3 关闭swap分区（K8s禁止虚拟内存以提高性能）
 
     swapoff -a  # 临时关闭
-    sed -ri 's/.*swap.*/#&' /etc/fstab  # 永久关闭
+    sed -ri 's/.*swap.*/#&/' /etc/fstab  # 永久关闭
 
 #### 1.4 在master添加hosts
 
@@ -40,11 +45,18 @@
     cat >> /etc/hosts << EOF
     192.168.0.10 k8smaster
     192.168.0.11 k8snode01
-    #192.168.0.12 node2
+    192.168.0.12 node2
     EOF
 
 #### 1.5 设置网桥参数
 
+    # 确保 br_netfilter 模块被加载。这一操作可以通过运行 lsmod | grep br_netfilter 来完成
+    # 若要显式加载该模块，可执行 sudo modprobe br_netfilter。
+    cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+    br_netfilter
+    EOF
+
+    # 确保节点上的 iptables 能够正确地查看桥接流量，增加以下内容
     cat >> /etc/sysctl.d/k8s.conf << EOF
     net.bridge.bridge-nf-call-ip6tables = 1
     net.bridge.bridge-call-iptables = 1
@@ -73,6 +85,11 @@ k8s默认容器运行环境是Docker，因此首先需要安装Docker；
 
     yum install docker-ce-19.03.13 -y
     # yum install docker -y # (这个版本可能偏旧)
+
+    # 启动docker
+    sudo systemctl enable docker
+    sudo systemctl daemon-reload
+    sudo systemctl restart docker
 
 ##### 2.1.3 配置加速器加速下载
 
@@ -113,6 +130,9 @@ k8s默认容器运行环境是Docker，因此首先需要安装Docker；
     # 查看安装的版本号
     kubelet --version
 
+    # 开机启动
+    sudo systemctl enable --now kubelet
+
 - kubelet: 运行在所有的cluster节点上，负责启动pod和容器。
 - kubeadm：用于初始化cluster的工具。
 - kubectl：kubectl是kubernetes的命令行工具，通过kubectl可以部署和管理应用，查看各种资源，创建、删除和更新组件。
@@ -121,14 +141,14 @@ k8s默认容器运行环境是Docker，因此首先需要安装Docker；
 
 在master主节点执行：
 
-    kubeadm init --apiserver-advertise-address=192.168.0.10 --image-repository registry.aliyuncs.com/google_containers --kubernetes-version v1.19.4 --service-cidr=10.96.0.0/12 --pod-network-cidr=10.244.0.0/16
+    kubeadm init --apiserver-advertise-address=192.168.0.39 --image-repository registry.aliyuncs.com/google_containers --kubernetes-version v1.20.5 --service-cidr=10.96.0.0/12 --pod-network-cidr=10.244.0.0/16
 
 **说明**：service-cidr的选取不能和PodCIDR及本机网络有重叠或者冲突，一般可以选择一个本机网络和PodCIDR都没有用到的私有网段地址，比如PodCIDR使用10.244.0.0/16，那么service-cidr可以选择10.96.0.0/12，网络无重叠冲突即可。
 
 然后在master节点执行(上一个步骤中的日志中有描述)：
 
     mkdir -p $HOME/.kube
-    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube
+    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
     sudo chown $(id -u):$(id -g) $HOME/.kube/config
     
     # 查看k8s集群中的节点
