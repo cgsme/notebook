@@ -2,6 +2,31 @@
 
 [官方文档](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 
+---
+
+- [安装方式](#安装方式)  
+- [通过kubeadm安装k8s（CentOs7）（未测试）](#通过kubeadm安装k8scentos7)  
+  - [1 环境准备](#1-环境准备)
+    - [1.1 关闭防火墙](#11-关闭防火墙)
+    - [1.2 关闭selinux](#12-关闭selinux)
+    - [1.3 关闭swap分区（K8s禁止虚拟内存以提高性能）](#13-关闭swap分区k8s禁止虚拟内存以提高性能)
+    - [1.4 在master添加hosts](#14-在master添加hosts)
+    - [1.5 设置网桥参数](#15-设置网桥参数)
+    - [1.6 时间同步](#16-时间同步)
+  - [2 K8s具体安装步骤](#2-k8s具体安装步骤)
+    - [2.1 安装Docker](#21-安装docker)
+      - [2.1.1 更新Docker的yum源](#211-更新docker的yum源)
+      - [2.1.2 安装指定版本的Docker](#212-安装指定版本的docker)
+      - [2.1.3 配置加速器加速下载](#213-配置加速器加速下载)
+    - [2.2 安装k8s](#22-安装k8s)
+      - [2.2.1 添加k8s的阿里云yum源](#221-添加k8s的阿里云yum源)
+      - [2.2.2 安装kubeadm/kubelet/kubectl](#222-安装kubeadmkubeletkubectl)
+      - [2.2.3 部署kubernetes master主节点](#223-部署kubernetes-master主节点)
+      - [2.2.4 将node节点加入集群](#224-将node节点加入集群)
+      - [2.2.5 部署网络插件](#225-部署网络插件)
+
+---
+
 ## 安装方式
 
 - minikube
@@ -11,7 +36,7 @@
 - 二进制包
 - yum （版本太旧）
 
-## 通过kubeadm安装k8s（CentOs7）（未测试）
+## 通过kubeadm安装k8s（CentOs7）
 
 ### 1 环境准备
 
@@ -101,7 +126,9 @@ k8s默认容器运行环境是Docker，因此首先需要安装Docker；
     # 生效 启动docker
     systemctl enbale docker.service & systemctl start docker
 
-##### 2.1.4 添加k8s的阿里云yum源
+#### 2.2 安装k8s
+
+##### 2.2.1 添加k8s的阿里云yum源
 
 默认从谷歌的源下载，国内无法访问。添加以下配置：
 
@@ -116,7 +143,7 @@ k8s默认容器运行环境是Docker，因此首先需要安装Docker；
     https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
     EOF
 
-##### 2.1.5 安装kubeadm/kubelet/kubectl
+##### 2.2.2 安装kubeadm/kubelet/kubectl
 
     yum install kubelet-1.19.4 kubeadm-1.19.4 kubectl-1.19.4 -y
     # 然后执行
@@ -137,7 +164,7 @@ k8s默认容器运行环境是Docker，因此首先需要安装Docker；
 - kubeadm：用于初始化cluster的工具。
 - kubectl：kubectl是kubernetes的命令行工具，通过kubectl可以部署和管理应用，查看各种资源，创建、删除和更新组件。
 
-##### 2.1.6 部署kubernetes master主节点
+##### 2.2.3 部署kubernetes master主节点
 
 在master主节点执行：
 
@@ -154,13 +181,13 @@ k8s默认容器运行环境是Docker，因此首先需要安装Docker；
     # 查看k8s集群中的节点
     kubectl get nodes
 
-##### 2.1.7 将node节点加入集群
+##### 2.2.4 将node节点加入集群
 
 在work node中执行上面init命令输出的日志中的最后一部分内容，大致如下：
 
     kubeadm join 192.168.0.10:6443 --token xxx --discovery-token-ca-cert-hash adfagasdljlj23jr18u12j213jxxxxxx
 
-##### 2.1.8 部署网络插件
+##### 2.2.5 部署网络插件
 
     wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
