@@ -28,3 +28,8 @@ yum仓库位于 `/etc/yum.repos.d` 目录下。可以在改目录中创建自定
 > 添加仓库
 
     yum-config-manager --add-repo http://www.example.com/example.repo
+
+> 指定软件安装路径
+
+    yum --installroot=/xxx/xxx --releaserve=/ install vim
+  
