@@ -7,7 +7,7 @@ Cobra 既是一个用于创建强大的现代 CLI 应用程序的库，也是一
 Cobra提供：
 
 - 简单的基于子命令的 CLI: `app server`, `app fetch`等等
-- 支持完全符合 POSIX 的标志（包括短版和长版）
+- 支持完全符合 POSIX（可移植操作系统接口） 的标志（包括短版和长版）
 - 全局、本地和级联标志
 - 通过 `cobra init appname` 和 `cobra add cmdname` 可以简单地生成应用和命令
 - 智能建议（`app srver ...` 是否为 `app server` ?）
