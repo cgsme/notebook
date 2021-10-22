@@ -35,14 +35,13 @@
         \d+ tablename
 
 - 建立索引
+  - 单字段索引
 
-1、单字段索引
+            CREATE INDEX index_name ON table_name (field1);
 
-    CREATE INDEX index_name ON table_name (field1);
+  - 多字段索引
 
-2、多字段索引
-
-    CREATE INDEX index_name ON table_name (field1,field2);
+            CREATE INDEX index_name ON table_name (field1,field2);
 
 - 查看sql执行时间
   
