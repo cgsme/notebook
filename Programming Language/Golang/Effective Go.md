@@ -2,7 +2,7 @@
 
 [Effective Go 中文](https://learnku.com/docs/effective-go/2020/embedded/6248)
 
-不重复造了!!!
+**不重复造了!!!**
 
 ## 嵌套（Embedding）
 
