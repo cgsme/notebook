@@ -1,6 +1,8 @@
 # API Server
 
-API Server是Kubernetes控制平面的核心。
+**Master节点中的组件。**
+
+API Server是Kubernetes控制平面的核心。（资源操作入口）
 
 API服务器负载提供HTTP API，用于用户、集群中的不同部分和集群外部组件相互通信。
 
@@ -11,3 +13,5 @@ API服务器负载提供HTTP API，用于用户、集群中的不同部分和集
 客户端可依赖的类库可以参考：[客户端库](https://kubernetes.io/zh/docs/reference/using-api/client-libraries/)  
 其中有官方支持的库，比如：dotnet、Go、Haskell、Java、Javascript、Python。  
 以及很多由社区维护的客户端库：NodeJs、Java、Go、PHP、Perl、Ruby、Scala...等
+
+维护的REST对象，将持久化到etcd。
