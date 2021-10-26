@@ -17,6 +17,10 @@ kubernete中包含非常多的资源，查看各种资源的情况可以通过�
         # 得到pod、nodes、service、deployment set...等等
         kubectl get api-resources
 
+- 获取kubernetes中支持的所有资源的api版本号
+
+        kubectl get api-version
+
 - 查看命名空间
 
         # namespace可以简写为 ns。支持单复数形式
