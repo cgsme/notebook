@@ -8,8 +8,8 @@
 
 执行以下命令：
 
-    #这条命令会在`·`~/.ssh/`目录下生成私钥和公钥 `id_rsa`、`id_rsa.pub`
-    ssh-keygen -t rsa   #一直回车就行
+    # 这条命令会在`~/.ssh/`目录下生成私钥和公钥 `id_rsa`、`id_rsa.pub`
+    ssh-keygen -t rsa   # 一直回车就行
 
     #将公钥发送到需要免密登录的主机的`~/.ssh/`中
     ssh-copy-id -i ~/.ssh/id.rsa.pub root@192.169.0.11
