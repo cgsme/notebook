@@ -4,6 +4,10 @@ Notebook.
 
 ## TODOLIST
 
+- 2021.11.01 - 2021.11.07
+- [ ] Golang
+- [ ] Kubernetes
+
 - 2021.10.24 - 2021.10.31
 - [ ] Kubernetes
 - [ ] Golang
