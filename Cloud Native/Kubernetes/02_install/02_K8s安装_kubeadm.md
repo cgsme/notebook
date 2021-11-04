@@ -198,3 +198,48 @@ k8s默认容器运行环境是Docker，因此首先需要安装Docker；
 查看运行时pod：
 
     kubectl get pods -n kube-system
+
+## kubeadm 工作原理
+
+**`kubeadm init`工作流程**：
+
+- 执行 kubeadm init 之后，kubeadm会先执行一系列的检查工作，确保机器可以用来部署Kubernetes。这一步检查称为 `Preflight Checks`。
+- 生成Kubernetes对外提供服务所需的各种证书和对应的目录。
+
+    Kubernetes 对外提供服务时，除非专门开启 “不安全模式”，否则都要通过 https 才能访问 kube-apiserver 。生成的证书文件都放在 Master 节点的 `/etc/kubernetes/pki` 目录下。这个目录下最主要的证书文件时 ca.crt 和对应的私钥 ca.key 。
+
+    此外，用户使用 kubectl 获取容器日志等 `streaming` 操作时，需要通过 kube-apiserver 向 kubelet 发起请求，这个连接也必须时安全的。kubeadm 为这一步生成的时 apiserver-kubelet-client.crt 文件。对应的私钥是 apiserver-kubelet-client.key。
+
+    ... 还有其他证书。
+
+- 证书生成后，kubeadm 为其他组件生成方位 kube-apiserver所需的配置文件。
+  
+    这些文件的路径为：/etc/kubernetes/xxx.conf:
+
+        ls /etc/kubernetes/
+
+        admin.conf  controller-manager.conf  kubelet.conf  scheduler.conf
+
+- 为 Master 组件生成 Pod 配置文件
+  
+    Master 组件包括：kube-apiserver、kube-controller-manager、kube-scheduler。它们都会以 Pod 的方式部署。
+
+    此时 Kubernetes 集群还未创建，所以这些组件都会以 `Static Pod` 的形式启动。（即：将需要部署的 Pod 的 YAML 文件放在一个指定的目录里。当这台机器上的 kubelet 启动时，它会自动检查这个目录，加载所有的 Pod YAML 文件，然后在这台机器上启动它们）YAML 文件会被生成在 /etc/kubernetes/manifests 路径下。
+
+    可以看出 kubelet 在 Kubernetes 中的地位非常高，在设计上它就是一个完全独立的组件，而其他 Master 组件，则更像是辅助性的系统容器。
+
+- 生成 etcd 的 Pod YAML 文件，同样通过 static pod 的方式启动 etc
+- Master 容器启动后，kubeadm 会通过检查 localhost:6443/healthz 这个 Master 组件的健康检查 URL，等待 Master 组件完全运行起来。
+- 为集群生成一个 bootstrap token。只要持有这个 token，任何一个安装了 kubelet 和 kubadm 的节点，都可以通过 kubeadm join 加入到集群中。这个 token 在 kubeadm init 执行结束之后打印在控制台。
+- token 生成之后，kubeadm 会将 ca.crt 等 Master 节点的重要信息，通过 ConfigMap 的方式保存在 Etcd 当中，供后续部署 Node 节点使用。这个 ConfigMap 的名字是 cluster-info。
+- 安装默认插件。Kubernetes 默认kube-proxy 和 DNS 这两个插件是必须安装的。分别用来提供整个集群的服务发现和 DNS 功能。这两个插件也只是两个容器镜像。
+
+**`kubeadm join`工作流程**
+
+为什么 `kubeadm join` 需要一个 token？
+
+因为任何一台机器想要成为 Kubernetes 集群中的一个节点，就必须在集群的 kube-apiserver 上注册。需要跟 apiserver 通信就必须要获取到相应的证书文件（CA文件）。为了一件安装，就不能让用户手动去 Master 节点上手动拷贝这些文件。
+
+所以 kubeadm 至少需要发起一次“不安全模式”的访问到 kube-apiserver，从而拿到保存在 ConfigMap 中的 cluster-info（它保存了APIServer的授权信息）。而 token 就是这个过程中的安全验证的角色。
+
+只要有了 cluster-info 里的 kube-apiserver 的地址、端口、证书，kubelet 就可以以“安全模式”连接到 apiserver 上，这样一个新的节点就部署完成了。
