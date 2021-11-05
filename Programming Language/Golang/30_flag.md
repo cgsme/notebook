@@ -68,7 +68,7 @@ flag 只会在第一个非 flag 参数之前（"-"是一个非 flag 参数）或
 
 ## Example
 
-> 官方 <https://github.com/golang/go/blob/master/src/flag/example_test.go>
+> <https://github.com/golang/go/blob/master/src/flag/example_test.go>
 
 ```go
 
