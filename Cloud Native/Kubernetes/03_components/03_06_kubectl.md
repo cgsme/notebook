@@ -236,7 +236,7 @@ Deployment 也支持回滚：
 
 ## 其他命令
 
-### api资源 - api-resource
+### api资源 - api-resources
 
 打印所有支持的api资源。
 
