@@ -14,7 +14,6 @@ helm repo [command]
 - remove
 - update
 
-
 ## 添加仓库
 
 ```shell
