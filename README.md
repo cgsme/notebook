@@ -4,6 +4,9 @@ Notebook.
 
 ## TODOLIST
 
+- 2021.12.20 - 2021.12.25
+- [ ] ElasticSeach
+
 - 2021.11.15 - 2021.11.21
 - [ ] Golang
 - [ ] Ansible
