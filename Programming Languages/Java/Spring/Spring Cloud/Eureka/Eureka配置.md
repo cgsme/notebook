@@ -12,5 +12,5 @@
 
 - eureka.instance.prefer-ip-address=false           |   注册服务时是否使用IP注册，默认false
 - eureka.instance.ip-address                        |   实例的IP地址
-- eureka.instance.hostname                          |    实例的hostname，默认localhost
-- eureka.instance.instance-id                       |    实例的ID
+- eureka.instance.hostname                          |   实例的hostname，默认localhost
+- eureka.instance.instance-id                       |   实例的ID
