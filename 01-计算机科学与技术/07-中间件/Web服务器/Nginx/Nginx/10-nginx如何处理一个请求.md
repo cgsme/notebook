@@ -101,3 +101,49 @@ server {
     ...
 }
 ```
+
+## 一个简单的 PHP 站点配置
+
+nginx 如何选择一个位置来处理一个典型的简单 PHP 站点的请求：
+
+```conf
+server {
+    listen      80;
+    server_name example.org www.example.org;
+    root        /data/www;
+
+    location / {
+        index   index.html index.php;
+    }
+
+    location ~* \.(gif|jpg|png)$ {
+        expires 30d;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass  localhost:9000;
+        fastcgi_param SCRIPT_FILENAME
+                      $document_root$fastcgi_script_name;
+        include       fastcgi_params;
+    }
+}
+```
+
+nginx 首先搜索由文字字符串给出的最具体的前缀位置，无论列出的顺序如何。在上面的配置中，唯一的前缀位置是 “/”，并且由于它能匹配任何的请求，因此将用作最后的处理手段。然后nginx按照配置文件中列出的顺序检查正则表达式给出的位置。第一个匹配的表达式会停止搜索，nginx 将使用该位置。如果没有正则表达式与请求匹配，则 nginx 使用之前找到的最具体的前缀位置。
+
+注意，所有类型的位置仅测试不带参数的请求行的 URI 部分。这样做是因为查询字符串中的参数可以通过多种方式给出，例如：
+
+```text
+/index.php?user=john&page=1
+/index.php?page=1&user=john
+```
+
+此外，任何人都可以请求查询字符串中的任何内容：
+
+```text
+/index.php?page=1&something+else&user=john
+```
+
+现在让我们看看在上面的配置中如何处理请求：
+
+- 
