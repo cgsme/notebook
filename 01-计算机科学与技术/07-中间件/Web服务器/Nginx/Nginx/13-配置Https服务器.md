@@ -107,3 +107,66 @@ Certificate chain
 ```
 
 > 使用 SNI 测试配置时，指定 -servername 选项非常重要，因为 openssl 默认情况下不使用 SNI。
+
+在此示例中，www.GoDaddy.com 服务器证书 #0 的主题 (“s”) 由颁发者 (“i”) 签名，该颁发者本身就是证书 #1 的主题，该证书由颁发者签名，该颁发者本身就是证书 #2 的主题，该证书由知名颁发者 ValiCert, Inc. 签名。其证书存储在浏览器的内置证书库中（位于杰克建造的房子里）。
+
+如果尚未添加证书捆绑包，则仅显示服务器证书#0。
+
+## 单个 HTTP/HTTPS 服务器
+
+可以配置一个服务器来处理 HTTP 和 HTTPS 请求：
+
+```conf
+server {
+    listen              80;
+    listen              443 ssl;
+    server_name         www.example.com;
+    ssl_certificate     www.example.com.crt;
+    ssl_certificate_key www.example.com.key;
+    ...
+}
+```
+
+> 在 0.7.14 之前，无法有选择地为各个侦听套接字启用 SSL，如上所示。使用 ssl 指令只能为整个服务器启用 SSL，因此无法设置单个 HTTP/HTTPS 服务器。添加 `listen` 指令的 ssl 参数来解决这个问题。因此，不鼓励在现代版本中使用 ssl 指令。
+
+## 基于名称的 HTTPS 服务器
+
+配置两个或多个 HTTPS 服务器侦听单个 IP 地址时会出现一个常见问题：
+
+```conf
+server {
+    listen          443 ssl;
+    server_name     www.example.com;
+    ssl_certificate www.example.com.crt;
+    ...
+}
+
+server {
+    listen          443 ssl;
+    server_name     www.example.org;
+    ssl_certificate www.example.org.crt;
+    ...
+}
+```
+
+通过此配置，浏览器将接收默认服务器的证书，即 `www.example.com`，无论请求的服务器名称如何。这是由 SSL 协议行为引起的。 SSL 连接是在浏览器发送 HTTP 请求之前建立的，并且 nginx 不知道请求的服务器的名称。因此，它可能只提供默认服务器的证书。
+
+解决该问题的最古老、最可靠的方法是为每个 HTTPS 服务器分配一个单独的 IP 地址：
+
+```conf
+server {
+    listen          192.168.1.1:443 ssl;
+    server_name     www.example.com;
+    ssl_certificate www.example.com.crt;
+    ...
+}
+
+server {
+    listen          192.168.1.2:443 ssl;
+    server_name     www.example.org;
+    ssl_certificate www.example.org.crt;
+    ...
+}
+```
+
+## 具有多个名称的 SSL 证书
