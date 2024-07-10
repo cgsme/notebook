@@ -129,21 +129,24 @@ server {
 }
 ```
 
-nginx 首先搜索由文字字符串给出的最具体的前缀位置，无论列出的顺序如何。在上面的配置中，唯一的前缀位置是 “/”，并且由于它能匹配任何的请求，因此将用作最后的处理手段。然后nginx按照配置文件中列出的顺序检查正则表达式给出的位置。第一个匹配的表达式会停止搜索，nginx 将使用该位置。如果没有正则表达式与请求匹配，则 nginx 使用之前找到的最具体的前缀位置。
+nginx 首先搜索最具体的 location 前缀（和顺序无关）。在上面的配置中，唯一的 location 前缀是 “/”，由于它能匹配任何的请求，因此将用作最后的处理手段。然后 nginx 按照配置文件中列出的顺序检查以正则表达式给出的 location 。遇到第一个匹配的表达式会停止继续搜索，nginx 将使用该 location。如果没有正则表达式与请求匹配，则 nginx 使用之前找到的最具体的 location。
 
-注意，所有类型的位置仅测试不带参数的请求行的 URI 部分。这样做是因为查询字符串中的参数可以通过多种方式给出，例如：
+注意，所有类型的 location 仅测试不带参数的请求行的 URI 部分。这样做是因为查询字符串中的参数多种多样的，例如：
 
 ```text
 /index.php?user=john&page=1
 /index.php?page=1&user=john
 ```
 
-此外，任何人都可以请求查询字符串中的任何内容：
+此外，任何人都可以在查询字符串请求任何内容：
 
 ```text
 /index.php?page=1&something+else&user=john
 ```
 
-现在让我们看看在上面的配置中如何处理请求：
+我们看看在上面的配置中如何处理请求：
 
-- 
+- 请求 `/logo.gif` 首先与 `location /` 匹配，然后与正则表达式 `\.(gif|jpg|png)$` 匹配，所以将由正则表达式对应的 location 进行处理。使用指令 `root /data/www`，请求被映射到文件 `/data/www/logo.gif`，并且该文件被发送到客户端。
+- 请求 `/index.php` 也首先与 `location /` 匹配，然后与正则表达式 `\.(php)$` 匹配。所以由正在表达式对应的 location 处理，并将请求传递到监听 `localhost:9000` 的 FastCGI 服务器。`fastcgi_param` 指令将 FastCGI 参数 `SCRIPT_FILENAME` 设置为 `/data/www/index.php`，FastCGI 服务器将执行该文件。变量 `$document_root` 等于根指令的值，变量 `$fastcgi_script_name` 等于请求 URI，即 `/index.php`。
+- 请求 `/about.html` 仅与 `location /` 匹配，因此在该 location 处理。使用指令 `root /data/www`，请求被映射到文件 `/data/www/about.html`，并且该文件被发送到客户端。
+- 处理请求 `/` **比较复杂**。仅与 `location \` 匹配，因此由该 location 处理。然后 `index` 指令根据其参数和 `root /data/www` 指令测试索引文件是否存在。如果文件 `/data/www/index.html` 不存在，并且文件 `/data/www/index.php` 存在，则该指令会执行**内部重定向**到 `/index.php`，nginx 将再次搜索这些 locations，就像请求是从客户端发送的一样。重定向的请求最终将由 FastCGI 服务器处理。
