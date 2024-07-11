@@ -170,3 +170,64 @@ server {
 ```
 
 ## 具有多个名称的 SSL 证书
+
+有其他方法允许在多个 HTTPS 服务器之间共享单个 IP 地址。然而，它们都有各自的缺点。一种方法是在 SubjectAltName 证书字段中使用具有多个名称的证书，例如 `www.example.com` 和 `www.example.org`。然而，SubjectAltName 字段的长度是有限的。
+
+另一种方法是使用具有通配符名称的证书，例如，`*.example.org`。通配符证书确保指定域的所有子域的安全，但仅在一个级别上。此证书匹配 `www.example.org`，但不匹配 `example.org` 和 `www.sub.example.org`。这两种方法也可以结合使用。证书可能在 SubjectAltName 字段中包含确切和通配符名称，例如，`example.org` 和 `*.example.org`。
+
+最好将具有多个名称的证书文件及其私钥文件放置在 `http` 级别，以便在所有服务器中继承其单个内存副本：
+
+```conf
+ssl_certificate     common.crt;
+ssl_certificate_key common.key;
+
+server {
+    listen          443 ssl;
+    server_name     www.example.com;
+    ...
+}
+
+server {
+    listen          443 ssl;
+    server_name     www.example.org;
+    ...
+}
+```
+
+## 服务器名称指示 (Server Name Indication)
+
+在单个 IP 地址上运行多个 HTTPS 服务器的更通用解决方案是 [TLS Server Name Indication extension](http://en.wikipedia.org/wiki/Server_Name_Indication)（SNI，RFC 6066），它允许浏览器在 SSL 握手期间传递请求的服务器名称，因此，服务器将知道应为连接使用哪个证书。SNI 目前被大多数现代浏览器支持，但某些旧版或特殊客户端可能不使用。
+
+> 在 SNI 中只能传递域名，然而，如果请求包含字面值的 IP 地址，某些浏览器可能会错误地将服务器的 IP 地址作为其名称传递。不应依赖于此。
+
+为了在 Nginx 中使用 SNI，它必须在构建 Nginx 二进制文件的 OpenSSL 库以及运行时动态链接的库中都得到支持。自 0.9.8f 版本以来，如果使用 `--enable-tlsext` 配置选项构建 OpenSSL，则 OpenSSL 支持 SNI。自 OpenSSL 0.9.8j 起，此选项默认启用。如果 Nginx 是在支持 SNI 的情况下构建的，那么在使用 `-V` 开关运行时，Nginx 将会输出提示：
+
+```shell
+$ nginx -V
+...
+TLS SNI support enabled
+...
+```
+
+然而，如果启用了 SNI 的 Nginx 动态链接到不支持 SNI 的 OpenSSL 库，Nginx 会显示警告：
+
+```text
+nginx was built with SNI support, however, now it is linked
+dynamically to an OpenSSL library which has no tlsext support,
+therefore SNI is not available
+```
+
+## 兼容性
+
+- 自 0.8.21 和 0.7.62 以来，“-V” 开关已显示 SNI 支持状态。
+- 自 0.7.14 以来，listen 指令的 ssl 参数已受支持。在 0.8.21 之前，它只能与 default 参数一起指定。
+- 自 0.5.23 以来，SNI 已受支持。
+- 自 0.5.6 以来，共享 SSL 会话缓存已受支持。
+- 1.23.4 及更高版本：默认 SSL 协议为 TLSv1、TLSv1.1、TLSv1.2 和 TLSv1.3（如果 OpenSSL 库支持）。
+- 1.9.1 及更高版本：默认 SSL 协议为 TLSv1、TLSv1.1 和 TLSv1.2（如果 OpenSSL 库支持）。
+- 0.7.65、0.8.19 及更高版本：默认 SSL 协议为 SSLv3、TLSv1、TLSv1.1 和 TLSv1.2（如果 OpenSSL 库支持）。
+- 0.7.64、0.8.18 及更早版本：默认 SSL 协议为 SSLv2、SSLv3 和 TLSv1。
+- 1.0.5 及更高版本：默认 SSL 密码为 “HIGH:!aNULL:!MD5” 。
+- 0.7.65、0.8.20 及更高版本：默认 SSL 密码为 “HIGH:!ADH:!MD5” 。
+- 0.8.19 版本：默认 SSL 密码为 “ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM” 。
+- 0.7.64、0.8.18 及更早版本：默认 SSL 密码为 “ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP” 。
