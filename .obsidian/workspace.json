@@ -1,0 +1,190 @@
+{
+  "main": {
+    "id": "a171ebcab4da01f9",
+    "type": "split",
+    "children": [
+      {
+        "id": "63de28d62f948ba6",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "911acd4f97ac9da3",
+            "type": "leaf",
+            "state": {
+              "type": "split-diff-view",
+              "state": {
+                "aFile": ".obsidian/appearance.json",
+                "bFile": ".obsidian/appearance.json",
+                "aRef": ""
+              },
+              "icon": "diff",
+              "title": "Diff: appearance.json"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "bbaf739e5f294c09",
+    "type": "split",
+    "children": [
+      {
+        "id": "64e263f57da2055c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5dead1d2774fc0d6",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "f185d9b575986e06",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "7822dd4f784d5638",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "cc0cf5f812a23622",
+    "type": "split",
+    "children": [
+      {
+        "id": "82b01746357aa4a8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2e9a2573d4aa1649",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "TODO.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "TODO 的反向链接列表"
+            }
+          },
+          {
+            "id": "26e79ec861d9ec2a",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "TODO.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "TODO 的出链列表"
+            }
+          },
+          {
+            "id": "e3e7eadaf02bc661",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "21560c2720662149",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "TODO.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "TODO 的大纲"
+            }
+          },
+          {
+            "id": "784021def8880c8e",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "horizontal",
+    "width": 375.5
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "obsidian-git:Open Git source control": false
+    }
+  },
+  "active": "911acd4f97ac9da3",
+  "lastOpenFiles": [
+    "01-计算机科学与技术/07-中间件/文件服务器/minIO/minio.md",
+    "学习方法.md",
+    "TODO.md",
+    "01-计算机科学与技术/01-计算机组成原理/原码_反码_补码.md",
+    "01-计算机科学与技术/01-计算机组成原理/计算机组成原理.md"
+  ]
+}
