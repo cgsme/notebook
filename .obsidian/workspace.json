@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "63de28d62f948ba6",
+        "id": "d334a8dcc0a6d3fa",
         "type": "tabs",
         "children": [
           {
-            "id": "911acd4f97ac9da3",
+            "id": "d058f604a69488ee",
             "type": "leaf",
             "state": {
-              "type": "split-diff-view",
+              "type": "markdown",
               "state": {
-                "aFile": ".obsidian/appearance.json",
-                "bFile": ".obsidian/appearance.json",
-                "aRef": ""
+                "file": "01-计算机科学与技术/11-流媒体/FFmpeg/常用命令.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "diff",
-              "title": "Diff: appearance.json"
+              "icon": "lucide-file",
+              "title": "常用命令"
             }
           }
         ]
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "TODO.md",
+                "file": "01-计算机科学与技术/11-流媒体/FFmpeg/常用命令.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "TODO 的大纲"
+              "title": "常用命令 的大纲"
             }
           },
           {
@@ -179,9 +179,13 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "911acd4f97ac9da3",
+  "active": "784021def8880c8e",
   "lastOpenFiles": [
+    "01-计算机科学与技术/11-流媒体/FFmpeg/常用命令.md",
+    "01-计算机科学与技术/11-流媒体/FFmpeg",
     "01-计算机科学与技术/07-中间件/文件服务器/minIO/minio.md",
+    "01-计算机科学与技术/07-中间件/Git/Git.md",
+    "01-计算机科学与技术/07-中间件/文件服务器/miniserve/miniserve.md",
     "学习方法.md",
     "TODO.md",
     "01-计算机科学与技术/01-计算机组成原理/原码_反码_补码.md",
