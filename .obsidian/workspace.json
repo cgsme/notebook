@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "01-计算机科学与技术/11-流媒体/FFmpeg/常用命令.md",
+                "file": "01-计算机科学与技术/11-流媒体/FFmpeg/安装.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "常用命令"
+              "title": "安装"
             }
           }
         ]
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "01-计算机科学与技术/11-流媒体/FFmpeg/常用命令.md",
+                "file": "01-计算机科学与技术/11-流媒体/FFmpeg/安装.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "常用命令 的大纲"
+              "title": "安装 的大纲"
             }
           },
           {
@@ -179,9 +179,10 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "784021def8880c8e",
+  "active": "d058f604a69488ee",
   "lastOpenFiles": [
     "01-计算机科学与技术/11-流媒体/FFmpeg/常用命令.md",
+    "01-计算机科学与技术/11-流媒体/FFmpeg/安装.md",
     "01-计算机科学与技术/11-流媒体/FFmpeg",
     "01-计算机科学与技术/07-中间件/文件服务器/minIO/minio.md",
     "01-计算机科学与技术/07-中间件/Git/Git.md",
